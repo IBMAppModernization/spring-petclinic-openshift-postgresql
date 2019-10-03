@@ -1,7 +1,20 @@
 # Spring PetClinic Sample Application [![Build Status](https://travis-ci.org/spring-projects/spring-petclinic.png?branch=master)](https://travis-ci.org/spring-projects/spring-petclinic/)
 
 ## This fork
-The fork has been modified to run on Cloud Foundry on the [IBM Cloud](https://cloud.ibm.com). Rather than using MySQL as the external database, it was tweaked to use [IBM Cloud Databases for PostgreSQL](https://www.ibm.com/cloud/databases-for-postgresql) instead
+The fork has been modified to run on Red Hat OpenShift on the [IBM Cloud](https://cloud.ibm.com). Rather than using MySQL as the external database, it was tweaked to use [PostgreSQL](https://www.ibm.com/cloud/databases-for-postgresql) instead.
+
+### Additional changes for the fork
+1. [An OpenShift Template](templates/docker/petclinic-templates.yaml) containing a BuildConfig, DeploymentConfig, Service and Route and ENV vars pointing to a required PostgreSQl deployment in the same project.
+
+2. [A Dockerfile](Dockerfile) used by the BuildConfig to build a conatiner image conatining this app. This image is based on the *fabric8/java-centos-openjdk8-jre* image in Dockerhub.
+
+
+3. A *readiness endpoint* in the DeploymentConfig to allow OpenShift to determine when the app is ready to service requests. Support for this endpoint is part of the original app. We just included a reference to it in the DeploymentConfig.
+
+4. The application profile is set to the PostgreSQL profile in this fork instead of the  default HSQLDB one that the originall codebase uses by default.
+
+5. Added [the application "fat jar"](target/spring-petclinic-k8s-2.1.0.jar) to the repo so the OpenShift BuildConfig can use it to build the app image.
+
 
 ## Understanding the Spring Petclinic application with a few diagrams
 <a href="https://speakerdeck.com/michaelisvy/spring-petclinic-sample-application">See the presentation here</a>
@@ -11,8 +24,8 @@ Petclinic is a [Spring Boot](https://spring.io/guides/gs/spring-boot) applicatio
 
 
 ```
-git clone https://github.com/IBMAppModernization/spring-petclinic-cf-db2.git
-cd spring-petclinic-cf-db2
+git clone https://github.com/IBMAppModernization/spring-petclinic-openshift-postgresql.git
+cd spring-petclinic-openshift-postgresql
 ./mvnw package
 java -jar target/*.jar
 ```
@@ -35,7 +48,7 @@ Our issue tracker is available here: https://github.com/spring-projects/spring-p
 
 In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
 gets populated at startup with data. A similar setup is provided for PostgreSQL in case a persistent database configuration is needed.
-Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=postgresql for PostgreSQL.
+Note that whenever the database type is changed, the app needs to be run with a different profile: `spring.profiles.active=postgresql` for PostgreSQL. In this fork we use the ENV variable **SPRING_PROFILES_ACTIVE** to control the active profile.
 
 
 ## Working with Petclinic in your IDE
@@ -54,7 +67,7 @@ The following items should be installed in your system:
 
 1) On the command line
 ```
-git clone https://github.com/spring-projects/spring-petclinic.git
+git clone https://github.com/IBMAppModernization/spring-petclinic-openshift-postgresql.git
 ```
 2) Inside Eclipse or STS
 ```

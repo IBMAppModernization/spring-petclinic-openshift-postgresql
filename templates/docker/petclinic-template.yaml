@@ -3,11 +3,11 @@ kind: Template
 metadata:
   name: spring-petclinic
   annotations:
-    openshift.io/display-name: Spring Boot Pet Clinic sample
-    description: Spring Boot Pet Clinic sample using postgresql
+    openshift.io/display-name: Spring Boot PetClinic sample
+    description: Spring Boot PetClinic sample using postgresql
     tags: spring,postgresql
     openshift.io/provider-display-name: IBM Client Dev Advocacy.
-    openshift.io/documentation-url: https://github.com/IBMAppModernization/spring-petclinic-openshift-postgresql
+    openshift.io/documentation-url: https://github.com/IBMAppModernization/spring-petclinic-openshift-postgresql.git
     openshift.io/support-url: https://access.redhat.com
 labels:
   app: petclinic-postgresql
@@ -137,7 +137,13 @@ objects:
           - name: hazelcast
             containerPort: 5701
             protocol: TCP
-
+          readinessProbe:
+            httpGet:
+              path: /manage/health
+              port: 8080
+            initialDelaySeconds: 35
+            timeoutSeconds: 2
+            periodSeconds: 10
           env:
           - name: SPRING_PROFILES_ACTIVE
             value: "${APPLICATION_PROFILE}"
@@ -195,17 +201,5 @@ objects:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-    selector:
-      deploymentConfig: "${APPLICATION_NAME}"
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: hazelcast-service
-    annotations:
-      description: Hazelcast port
-  spec:
-    ports:
-    - protocol: TCP
-      port: 5701
     selector:
       deploymentConfig: "${APPLICATION_NAME}"
