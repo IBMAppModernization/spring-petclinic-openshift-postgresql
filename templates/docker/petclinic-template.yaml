@@ -46,6 +46,11 @@ parameters:
   description: Name of database service
   value: postgresql
   required: true
+- name: PETCLINIC_DB_INITIALIZATION
+  description: DB initialization: always or never
+  displayName: DB initialization: always or never
+  value: 'always'
+  required: true
 - name: GENERIC_TRIGGER_SECRET
   displayName: Generic build trigger secret
   description: Generic build trigger secret
@@ -140,6 +145,8 @@ objects:
               secretKeyRef:
                 key: database-user
                 name: "${PETCLINIC_DB_SERVICE}"
+          - name: DB_INITIALIZATION
+            value: "${PETCLINIC_DB_INITIALIZATION}"
           - name: DB_PORT
             value: '5432'
           - name: DB_HOST
