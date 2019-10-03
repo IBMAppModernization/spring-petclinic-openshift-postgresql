@@ -47,8 +47,8 @@ parameters:
   value: postgresql
   required: true
 - name: PETCLINIC_DB_INITIALIZATION
-  description: DB initialization: always or never
-  displayName: DB initialization: always or never
+  description: DB initialization always or never
+  displayName: DB initialization always or never
   value: 'always'
   required: true
 - name: GENERIC_TRIGGER_SECRET
@@ -137,13 +137,7 @@ objects:
           - name: hazelcast
             containerPort: 5701
             protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8080
-            initialDelaySeconds: 35
-            timeoutSeconds: 2
-            periodSeconds: 10
+
           env:
           - name: SPRING_PROFILES_ACTIVE
             value: "${APPLICATION_PROFILE}"
