@@ -4,14 +4,13 @@
 The fork has been modified to run on Red Hat OpenShift on the [IBM Cloud](https://cloud.ibm.com). Rather than using MySQL as the external database, it was tweaked to use [PostgreSQL](https://www.ibm.com/cloud/databases-for-postgresql) instead.
 
 ### Additional changes for the fork
-1. [An OpenShift Template](templates/docker/petclinic-templates.yaml) containing a BuildConfig, DeploymentConfig, Service and Route and ENV vars pointing to a required PostgreSQl deployment in the same project.
+1. [An OpenShift Template](templates/docker/petclinic-templates.yaml) containing a BuildConfig, DeploymentConfig, Service and Route and ENV vars pointing to a required PostgreSQL deployment in the same project.
 
-2. [A Dockerfile](Dockerfile) used by the BuildConfig to build a conatiner image conatining this app. This image is based on the *fabric8/java-centos-openjdk8-jre* image in Dockerhub.
-
+2. [A Dockerfile](Dockerfile) used by the BuildConfig to build a container image containing this app. This image is based on the *fabric8/java-centos-openjdk8-jre* image in Dockerhub.
 
 3. A *readiness endpoint* in the DeploymentConfig to allow OpenShift to determine when the app is ready to service requests. Support for this endpoint is part of the original app. We just included a reference to it in the DeploymentConfig.
 
-4. The application profile is set to the PostgreSQL profile in this fork instead of the  default HSQLDB one that the originall codebase uses by default.
+4. The application profile is set to the PostgreSQL profile in this fork instead of the  default HSQLDB one that the original codebase uses by default.
 
 5. Added [the application "fat jar"](target/spring-petclinic-k8s-2.1.0.jar) to the repo so the OpenShift BuildConfig can use it to build the app image.
 
