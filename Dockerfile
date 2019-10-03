@@ -5,4 +5,4 @@ ENV AB_OFF true
 
 EXPOSE 8080
 
-ADD target/spring-petclinic-k8s-2.1.0.jar /app/
+ADD target/spring-petclinic-k8s-2.1.0.jar /deployments/
